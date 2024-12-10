@@ -12,7 +12,11 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(eigen)
 
 if(DEFINED SKBUILD)
-  # ... Fill me in!
+  find_package(pybind11 REQUIRED)
+  pybind11_add_module(_core src/_core.cpp src/integrator.hpp)
+  target_include_directories(_core PRIVATE src "${eigen_SOURCE_DIR}")
+  target_compile_features(_core PRIVATE cxx_std_11)
+  install(TARGETS _core LIBRARY DESTINATION binding_exercise)
 else()
   add_executable(main src/main.cpp src/integrator.hpp)
   target_include_directories(main PRIVATE src "${eigen_SOURCE_DIR}")
